@@ -1,0 +1,19 @@
+#!/bin/bash
+DB="practice.db"
+
+if [ -z "1" ]; then
+    echo "usage: runfile.sql | run file.py"
+    exit 1
+
+fi 
+
+FILE="$1"
+
+if [[ "$FILE" == *.sql ]]; then
+    sqlite3 -header -column "$DB" < "$FILE"
+elif [[ "$FILE" == *.py ]]; then 
+    python3 "$FILE"
+else
+    echo "Unsupported file type."
+    exit 1 
+fi

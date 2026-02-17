@@ -1,0 +1,15 @@
+# SQLite  database files
+practice.db
+*.db-jornal
+*.db-wal
+*db.shm
+
+# Python cache
+__pycache__/
+*.pyc
+
+#vscode settings
+.vscode/
+
+# macOS file
+>DS_Store
