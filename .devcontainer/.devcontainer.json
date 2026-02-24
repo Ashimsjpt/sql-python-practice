@@ -1,7 +1,11 @@
 {
   "name": "SQL + Python Practice",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3",
+
+  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git",
+
+  "updateContentCommand": "sudo apt update && sudo apt install -y sqlite3 git",
+
   "customizations": {
     "vscode": {
       "extensions": [

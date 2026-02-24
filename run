@@ -1,19 +1,78 @@
 #!/bin/bash
+set -e
+
 DB="practice.db"
+UPSTREAM_REMOTE="upstream"
+UPSTREAM_BRANCH="main"
 
-if [ -z "1" ]; then
-    echo "usage: runfile.sql | run file.py"
+PROTECTED_PATHS=(
+  "run"
+  ".devcontainer"
+  ".vscode"
+  ".gitignore"
+)
+
+# ========================
+# UPDATE FUNCTION
+# ========================
+update_repo() {
+    echo "🔄 Updating repository..."
+
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "❌ Not inside a git repository."
+        exit 1
+    fi
+
+    if ! git remote | grep -q "$UPSTREAM_REMOTE"; then
+        echo "❌ No upstream remote found."
+        echo "Run this once:"
+        echo "git remote add upstream <YOUR_UPSTREAM_REPO_URL>"
+        exit 1
+    fi
+
+    # Save local changes
+    git stash push -u -m "pre-update" || true
+
+    # Fetch and rebase
+    git fetch $UPSTREAM_REMOTE
+    git rebase $UPSTREAM_REMOTE/$UPSTREAM_BRANCH
+
+    # Restore protected files
+    echo "🛡 Restoring managed files..."
+    for path in "${PROTECTED_PATHS[@]}"; do
+        git checkout $UPSTREAM_REMOTE/$UPSTREAM_BRANCH -- "$path" 2>/dev/null || true
+    done
+
+    # Restore local work
+    git stash pop || true
+
+    echo "✅ Update complete!"
+}
+
+# ========================
+# MAIN LOGIC
+# ========================
+
+if [ "$1" = "update" ]; then
+    update_repo
+    exit 0
+fi
+
+if [ -z "$1" ]; then
+    echo "Usage:"
+    echo "  ./run file.sql"
+    echo "  ./run file.py"
+    echo "  ./run update"
     exit 1
-
-fi 
+fi
 
 FILE="$1"
 
 if [[ "$FILE" == *.sql ]]; then
     sqlite3 -header -column "$DB" < "$FILE"
-elif [[ "$FILE" == *.py ]]; then 
+elif [[ "$FILE" == *.py ]]; then
     python3 "$FILE"
 else
     echo "Unsupported file type."
-    exit 1 
+    exit 1
 fi
