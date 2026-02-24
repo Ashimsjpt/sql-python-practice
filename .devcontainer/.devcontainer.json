@@ -2,16 +2,24 @@
   "name": "SQL + Python Practice",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
 
-  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git",
-
-  "updateContentCommand": "sudo apt update && sudo apt install -y sqlite3 git",
+  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git && sudo cp run /usr/local/bin/run && sudo chmod +x /usr/local/bin/run",
 
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "alexcvzz.vscode-sqlite"
-      ]
+      ],
+      "settings": {
+        "files.exclude": {
+          "**/.git": true,
+          "**/.github": true,
+          "**/.devcontainer": true,
+          "**/.vscode": true,
+          "**/.gitignore": true,
+          "**/run": true
+        }
+      }
     }
   }
 }
