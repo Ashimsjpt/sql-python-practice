@@ -1,15 +1,17 @@
 {
   "name": "SQL + Python Practice",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "remoteUser": "codespace",
   "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git",
-  "postStartCommand": "grep -q \"alias run='bash /workspaces/sql-python-practice/run'\" ~/.bashrc || echo \"alias run='bash /workspaces/sql-python-practice/run'\" >> ~/.bashrc",
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "ms-python.vscode-pylance",
         "alexcvzz.vscode-sqlite"
       ],
       "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python3",
         "files.exclude": {
           "**/.git": true,
           "**/.github": true,
