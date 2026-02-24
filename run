@@ -1,3 +1,26 @@
+
+if [ "${1:-}" = "install" ]; then
+    mkdir -p ~/.local/bin
+
+    cat > ~/.local/bin/run <<'EOF'
+#!/usr/bin/env bash
+set -e
+
+if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  ROOT="$(git rev-parse --show-toplevel)"
+  exec bash "$ROOT/run" "$@"
+fi
+
+exec bash "/workspaces/sql-python-practice/run" "$@"
+EOF
+
+    chmod +x ~/.local/bin/run
+    hash -r
+    echo "✅ 'run' command installed."
+    echo "Open a new terminal and type: run update"
+    exit 0
+fi
+
 #!/bin/bash
 set -e
 

@@ -1,9 +1,8 @@
 {
   "name": "SQL + Python Practice",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-
-  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git && sudo cp run /usr/local/bin/run && sudo chmod +x /usr/local/bin/run",
-
+  "postCreateCommand": "sudo apt update && sudo apt install -y sqlite3 git",
+  "postStartCommand": "grep -q \"alias run='bash /workspaces/sql-python-practice/run'\" ~/.bashrc || echo \"alias run='bash /workspaces/sql-python-practice/run'\" >> ~/.bashrc",
   "customizations": {
     "vscode": {
       "extensions": [
