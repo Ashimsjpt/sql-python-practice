@@ -16,7 +16,7 @@ PROTECTED_PATHS=(
 # UPDATE FUNCTION
 # ========================
 update_repo() {
-    echo "🔄 Updating repository..."
+    echo "Updating repository..."
 
     if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
         echo "❌ Not inside a git repository."
@@ -38,7 +38,7 @@ update_repo() {
     git rebase $UPSTREAM_REMOTE/$UPSTREAM_BRANCH
 
     # Restore protected files
-    echo "🛡 Restoring managed files..."
+    echo "Restoring managed files..."
     for path in "${PROTECTED_PATHS[@]}"; do
         git checkout $UPSTREAM_REMOTE/$UPSTREAM_BRANCH -- "$path" 2>/dev/null || true
     done
@@ -46,7 +46,7 @@ update_repo() {
     # Restore local work
     git stash pop || true
 
-    echo "✅ Update complete!"
+    echo "Update complete!"
 }
 
 # ========================
